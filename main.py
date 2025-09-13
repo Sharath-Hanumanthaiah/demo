@@ -10,8 +10,7 @@ from cli import TaskTrackerCLI
 
 def main():
     """
-    Main entry point for the TaskTracker application.
-
+    Main entry point for th
     This function initializes the CLI and processes command-line arguments.
     If no arguments are provided, it shows the help menu.
     """
