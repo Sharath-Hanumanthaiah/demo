@@ -1,5 +1,484 @@
 {
-  "function": [],
+  "function": [
+    {
+      "implementation_id": "main_entry_point_main_py",
+      "test_cases": [
+        {
+          "description": "Tests that when main() is called with no command-line arguments (only the script name), the help menu is displayed.",
+          "id": "main_no_arguments_shows_help",
+          "implementation_id": "main_entry_point_main_py",
+          "name": "No arguments: Shows help menu",
+          "test_setup": {
+            "given": "sys.argv = ['main.py']",
+            "then": "Help menu is shown (e.g., TaskTrackerCLI.show_help() is called or help text is printed)",
+            "when": "main() is called"
+          },
+          "type": "positive"
+        },
+        {
+          "description": "Tests that when main() is called with one command-line argument (script name + 1 arg), the help menu is displayed.",
+          "id": "main_one_argument_shows_help",
+          "implementation_id": "main_entry_point_main_py",
+          "name": "One argument: Shows help menu",
+          "test_setup": {
+            "given": "sys.argv = ['main.py', '']",
+            "then": "Help menu is shown",
+            "when": "main() is called"
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Tests that when main() is called with two or more arguments, TaskTrackerCLI is initialized and run with those arguments.",
+          "id": "main_multiple_arguments_runs_cli",
+          "implementation_id": "main_entry_point_main_py",
+          "name": "Multiple arguments: Initializes and runs CLI",
+          "test_setup": {
+            "given": "sys.argv = ['main.py', 'add', 'task1']",
+            "then": "TaskTrackerCLI is initialized and run with arguments ['add', 'task1']",
+            "when": "main() is called"
+          },
+          "type": "positive"
+        },
+        {
+          "description": "Tests that when main() is called with a help argument, the help menu is displayed.",
+          "id": "main_help_argument_shows_help",
+          "implementation_id": "main_entry_point_main_py",
+          "name": "Help argument: Shows help menu",
+          "test_setup": {
+            "given": "sys.argv = ['main.py', '--help']",
+            "then": "Help menu is shown",
+            "when": "main() is called"
+          },
+          "type": "positive"
+        },
+        {
+          "description": "Tests that when an invalid command is given, an error is shown (handled by TaskTrackerCLI).",
+          "id": "main_invalid_command_shows_error",
+          "implementation_id": "main_entry_point_main_py",
+          "name": "Invalid command: Shows error",
+          "test_setup": {
+            "given": "sys.argv = ['main.py', 'invalidcommand']",
+            "then": "TaskTrackerCLI is initialized and shows an error message for invalid command",
+            "when": "main() is called"
+          },
+          "type": "negative"
+        },
+        {
+          "description": "Tests that if sys.argv is empty (rare but possible), the help menu is shown.",
+          "id": "main_empty_argv_list_shows_help",
+          "implementation_id": "main_entry_point_main_py",
+          "name": "Empty argv list: Shows help menu",
+          "test_setup": {
+            "given": "sys.argv = []",
+            "then": "Help menu is shown",
+            "when": "main() is called"
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Tests that if TaskTrackerCLI or its run method raises an exception, it is handled or propagated.",
+          "id": "main_cli_raises_exception",
+          "implementation_id": "main_entry_point_main_py",
+          "name": "CLI raises exception: Handles exception",
+          "test_setup": {
+            "given": "sys.argv = ['main.py', 'add', 'task1']; TaskTrackerCLI.run raises Exception",
+            "then": "Exception is handled or propagated (according to implementation)",
+            "when": "main() is called"
+          },
+          "type": "negative"
+        },
+        {
+          "description": "Tests that arguments containing spaces are correctly passed to TaskTrackerCLI.",
+          "id": "main_arguments_with_spaces",
+          "implementation_id": "main_entry_point_main_py",
+          "name": "Arguments with spaces: Passed to CLI",
+          "test_setup": {
+            "given": "sys.argv = ['main.py', 'add', 'my task with spaces']",
+            "then": "TaskTrackerCLI is initialized and run with ['add', 'my task with spaces']",
+            "when": "main() is called"
+          },
+          "type": "positive"
+        },
+        {
+          "description": "Tests that unicode arguments are correctly handled and passed to TaskTrackerCLI.",
+          "id": "main_unicode_arguments",
+          "implementation_id": "main_entry_point_main_py",
+          "name": "Unicode arguments: Passed to CLI",
+          "test_setup": {
+            "given": "sys.argv = ['main.py', 'add', 't\u00e2sk\u2611\ufe0f']",
+            "then": "TaskTrackerCLI is initialized and run with ['add', 't\u00e2sk\u2611\ufe0f']",
+            "when": "main() is called"
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Tests that a large number of arguments are all passed to TaskTrackerCLI.",
+          "id": "main_too_many_arguments",
+          "implementation_id": "main_entry_point_main_py",
+          "name": "Too many arguments: All passed to CLI",
+          "test_setup": {
+            "given": "sys.argv = ['main.py', 'add'] + ['task{}'.format(i) for i in range(100)]",
+            "then": "TaskTrackerCLI is initialized and run with all arguments",
+            "when": "main() is called"
+          },
+          "type": "edge"
+        }
+      ]
+    },
+    {
+      "implementation_id": "cli_command_handlers",
+      "test_cases": [
+        {
+          "description": "Successfully add a new user with all required arguments.",
+          "id": "add_user_success",
+          "implementation_id": "cli_command_handlers",
+          "name": "Add User - Success",
+          "test_setup": {
+            "given": "Arguments: username='alice', email='alice@example.com'. No user with this username exists.",
+            "then": "User is added and success message is printed",
+            "when": "add_user is called"
+          },
+          "type": "positive"
+        },
+        {
+          "description": "Attempt to add a user with missing required arguments.",
+          "id": "add_user_missing_arguments",
+          "implementation_id": "cli_command_handlers",
+          "name": "Add User - Missing Arguments",
+          "test_setup": {
+            "given": "Arguments: username='bob'. Email is missing.",
+            "then": "Error message about missing email argument is printed",
+            "when": "add_user is called"
+          },
+          "type": "negative"
+        },
+        {
+          "description": "Attempt to add a user with a username that already exists.",
+          "id": "add_user_duplicate_username",
+          "implementation_id": "cli_command_handlers",
+          "name": "Add User - Duplicate Username",
+          "test_setup": {
+            "given": "Arguments: username='alice', email='alice2@example.com'. User with username 'alice' already exists.",
+            "then": "Error message indicating username already exists is printed",
+            "when": "add_user is called"
+          },
+          "type": "negative"
+        },
+        {
+          "description": "List users when no users exist in the system.",
+          "id": "list_users_empty",
+          "implementation_id": "cli_command_handlers",
+          "name": "List Users - Empty List",
+          "test_setup": {
+            "given": "No users in the system.",
+            "then": "Message indicating no users found is printed",
+            "when": "list_users is called"
+          },
+          "type": "edge"
+        },
+        {
+          "description": "List users when users exist in the system.",
+          "id": "list_users_nonempty",
+          "implementation_id": "cli_command_handlers",
+          "name": "List Users - Non-empty List",
+          "test_setup": {
+            "given": "Users: ['alice', 'bob'] exist.",
+            "then": "List of users is printed",
+            "when": "list_users is called"
+          },
+          "type": "positive"
+        },
+        {
+          "description": "Successfully add a new task with all required arguments.",
+          "id": "add_task_success",
+          "implementation_id": "cli_command_handlers",
+          "name": "Add Task - Success",
+          "test_setup": {
+            "given": "Arguments: title='Fix bug', description='...', assigned_to='alice', priority='high'. User 'alice' exists.",
+            "then": "Task is added and success message is printed",
+            "when": "add_task is called"
+          },
+          "type": "positive"
+        },
+        {
+          "description": "Attempt to add a task without specifying a title.",
+          "id": "add_task_missing_title",
+          "implementation_id": "cli_command_handlers",
+          "name": "Add Task - Missing Title",
+          "test_setup": {
+            "given": "Arguments: description='...', assigned_to='alice', priority='high'. Title is missing.",
+            "then": "Error message about missing title argument is printed",
+            "when": "add_task is called"
+          },
+          "type": "negative"
+        },
+        {
+          "description": "Attempt to add a task with an invalid priority value.",
+          "id": "add_task_invalid_priority",
+          "implementation_id": "cli_command_handlers",
+          "name": "Add Task - Invalid Priority",
+          "test_setup": {
+            "given": "Arguments: title='Fix bug', description='...', assigned_to='alice', priority='urgent'. 'urgent' is not a valid priority.",
+            "then": "Error message about invalid priority value is printed",
+            "when": "add_task is called"
+          },
+          "type": "negative"
+        },
+        {
+          "description": "Successfully update an existing task's status.",
+          "id": "update_task_success",
+          "implementation_id": "cli_command_handlers",
+          "name": "Update Task - Success",
+          "test_setup": {
+            "given": "Task with id=1 exists. Arguments: id=1, status='done'.",
+            "then": "Task is updated and success message is printed",
+            "when": "update_task is called"
+          },
+          "type": "positive"
+        },
+        {
+          "description": "Attempt to update a task that does not exist.",
+          "id": "update_task_nonexistent",
+          "implementation_id": "cli_command_handlers",
+          "name": "Update Task - Nonexistent Task",
+          "test_setup": {
+            "given": "No task with id=99 exists. Arguments: id=99, status='done'.",
+            "then": "Error message indicating task does not exist is printed",
+            "when": "update_task is called"
+          },
+          "type": "negative"
+        },
+        {
+          "description": "Attempt to update a task without specifying required arguments.",
+          "id": "update_task_missing_arguments",
+          "implementation_id": "cli_command_handlers",
+          "name": "Update Task - Missing Arguments",
+          "test_setup": {
+            "given": "Arguments: id=1. Status is missing.",
+            "then": "Error message about missing status argument is printed",
+            "when": "update_task is called"
+          },
+          "type": "negative"
+        },
+        {
+          "description": "Successfully unassign a user from a task.",
+          "id": "unassign_task_success",
+          "implementation_id": "cli_command_handlers",
+          "name": "Unassign Task - Success",
+          "test_setup": {
+            "given": "Task with id=2 is assigned to user 'bob'.",
+            "then": "Task is unassigned and success message is printed",
+            "when": "unassign_task is called with id=2"
+          },
+          "type": "positive"
+        },
+        {
+          "description": "Attempt to unassign a task that is not assigned to any user.",
+          "id": "unassign_task_not_assigned",
+          "implementation_id": "cli_command_handlers",
+          "name": "Unassign Task - Not Assigned",
+          "test_setup": {
+            "given": "Task with id=3 is not assigned to any user.",
+            "then": "Message indicating task is already unassigned is printed",
+            "when": "unassign_task is called with id=3"
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Successfully reassign a task to a different user.",
+          "id": "reassign_task_success",
+          "implementation_id": "cli_command_handlers",
+          "name": "Reassign Task - Success",
+          "test_setup": {
+            "given": "Task with id=4 is assigned to 'alice'. User 'charlie' exists.",
+            "then": "Task is reassigned to 'charlie' and success message is printed",
+            "when": "reassign_task is called with id=4, new_user='charlie'"
+          },
+          "type": "positive"
+        },
+        {
+          "description": "Attempt to reassign a task to a user that does not exist.",
+          "id": "reassign_task_nonexistent_user",
+          "implementation_id": "cli_command_handlers",
+          "name": "Reassign Task - Nonexistent User",
+          "test_setup": {
+            "given": "Task with id=4 exists. User 'dan' does not exist.",
+            "then": "Error message indicating user does not exist is printed",
+            "when": "reassign_task is called with id=4, new_user='dan'"
+          },
+          "type": "negative"
+        },
+        {
+          "description": "View tasks assigned to a specific user who has tasks.",
+          "id": "view_by_user_with_tasks",
+          "implementation_id": "cli_command_handlers",
+          "name": "View By User - With Tasks",
+          "test_setup": {
+            "given": "User 'alice' has 2 assigned tasks.",
+            "then": "List of tasks assigned to 'alice' is printed",
+            "when": "view_by_user is called with user='alice'"
+          },
+          "type": "positive"
+        },
+        {
+          "description": "View tasks assigned to a specific user with no assigned tasks.",
+          "id": "view_by_user_no_tasks",
+          "implementation_id": "cli_command_handlers",
+          "name": "View By User - No Tasks",
+          "test_setup": {
+            "given": "User 'bob' has no assigned tasks.",
+            "then": "Message indicating no tasks assigned to 'bob' is printed",
+            "when": "view_by_user is called with user='bob'"
+          },
+          "type": "edge"
+        },
+        {
+          "description": "View tasks filtered by a valid status value.",
+          "id": "view_by_status_valid_status",
+          "implementation_id": "cli_command_handlers",
+          "name": "View By Status - Valid Status",
+          "test_setup": {
+            "given": "Some tasks exist with status='in-progress'.",
+            "then": "List of tasks with status 'in-progress' is printed",
+            "when": "view_by_status is called with status='in-progress'"
+          },
+          "type": "positive"
+        },
+        {
+          "description": "Attempt to view tasks with an invalid status value.",
+          "id": "view_by_status_invalid_status",
+          "implementation_id": "cli_command_handlers",
+          "name": "View By Status - Invalid Status",
+          "test_setup": {
+            "given": "No status 'blocked' exists in the valid status list.",
+            "then": "Error message about invalid status is printed",
+            "when": "view_by_status is called with status='blocked'"
+          },
+          "type": "negative"
+        },
+        {
+          "description": "View tasks filtered by a valid priority value.",
+          "id": "view_by_priority_valid_priority",
+          "implementation_id": "cli_command_handlers",
+          "name": "View By Priority - Valid Priority",
+          "test_setup": {
+            "given": "Some tasks exist with priority='high'.",
+            "then": "List of tasks with priority 'high' is printed",
+            "when": "view_by_priority is called with priority='high'"
+          },
+          "type": "positive"
+        },
+        {
+          "description": "Attempt to view tasks with an invalid priority value.",
+          "id": "view_by_priority_invalid_priority",
+          "implementation_id": "cli_command_handlers",
+          "name": "View By Priority - Invalid Priority",
+          "test_setup": {
+            "given": "No priority 'very-low' exists in the valid priority list.",
+            "then": "Error message about invalid priority is printed",
+            "when": "view_by_priority is called with priority='very-low'"
+          },
+          "type": "negative"
+        },
+        {
+          "description": "View list of overdue tasks when some are present.",
+          "id": "view_overdue_tasks_exist",
+          "implementation_id": "cli_command_handlers",
+          "name": "View Overdue - Tasks Exist",
+          "test_setup": {
+            "given": "Some tasks exist with due dates in the past.",
+            "then": "List of overdue tasks is printed",
+            "when": "view_overdue is called"
+          },
+          "type": "positive"
+        },
+        {
+          "description": "View overdue tasks when none are present.",
+          "id": "view_overdue_no_tasks",
+          "implementation_id": "cli_command_handlers",
+          "name": "View Overdue - No Overdue Tasks",
+          "test_setup": {
+            "given": "No tasks with due dates in the past.",
+            "then": "Message indicating no overdue tasks is printed",
+            "when": "view_overdue is called"
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Search tasks with a keyword that matches some tasks.",
+          "id": "search_tasks_found",
+          "implementation_id": "cli_command_handlers",
+          "name": "Search Tasks - Found",
+          "test_setup": {
+            "given": "Some tasks contain the keyword 'bug' in title or description.",
+            "then": "List of matching tasks is printed",
+            "when": "search is called with keyword='bug'"
+          },
+          "type": "positive"
+        },
+        {
+          "description": "Search tasks with a keyword that matches no tasks.",
+          "id": "search_tasks_not_found",
+          "implementation_id": "cli_command_handlers",
+          "name": "Search Tasks - Not Found",
+          "test_setup": {
+            "given": "No tasks contain the keyword 'performance'.",
+            "then": "Message indicating no tasks found is printed",
+            "when": "search is called with keyword='performance'"
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Display overall task statistics.",
+          "id": "stats_success",
+          "implementation_id": "cli_command_handlers",
+          "name": "Stats - Success",
+          "test_setup": {
+            "given": "Tasks exist in various statuses and priorities.",
+            "then": "Statistics summary is printed",
+            "when": "stats is called"
+          },
+          "type": "positive"
+        },
+        {
+          "description": "Add a task with a title at the maximum allowed length.",
+          "id": "add_task_long_title",
+          "implementation_id": "cli_command_handlers",
+          "name": "Add Task - Long Title Edge Case",
+          "test_setup": {
+            "given": "Arguments: title length is at the system's maximum allowed (e.g., 255 characters).",
+            "then": "Task is added and success message is printed",
+            "when": "add_task is called"
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Attempt to add a task with a title exceeding the maximum allowed length.",
+          "id": "add_task_title_too_long",
+          "implementation_id": "cli_command_handlers",
+          "name": "Add Task - Title Too Long",
+          "test_setup": {
+            "given": "Arguments: title length is 256 characters (assuming 255 is max).",
+            "then": "Error message about title length is printed",
+            "when": "add_task is called"
+          },
+          "type": "negative"
+        },
+        {
+          "description": "Provide arguments in an invalid format to test parsing robustness.",
+          "id": "argument_parsing_invalid_format",
+          "implementation_id": "cli_command_handlers",
+          "name": "Argument Parsing - Invalid Format",
+          "test_setup": {
+            "given": "Arguments missing '--' prefix or use unsupported syntax.",
+            "then": "Error message about invalid argument format is printed",
+            "when": "Any CLI command is called"
+          },
+          "type": "negative"
+        }
+      ]
+    }
+  ],
   "component": [],
   "endpoint": []
 }
