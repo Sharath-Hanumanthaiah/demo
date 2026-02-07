@@ -161,7 +161,7 @@
       },
       {
         "How_is_it_connected_to_implementation": "Provides ability to find a user by email, supporting uniqueness and filtering requirements.",
-        "change_type": "new",
+        "change_type": "unchanged",
         "file_path": "services.py",
         "id": "service_find_user_by_email",
         "name": "find_user_by_email",
@@ -179,31 +179,35 @@
   "task_3847291058_20260207090001": {
     "implementation": [
       {
-        "How_is_it_connected_to_implementation": "CLI command handler for assigning a user to a task. Invokes the service layer to perform assignment and provides feedback to the user.",
+        "How_is_it_connected_to_implementation": "Handles the CLI command for assigning a user to a task. Invokes the service layer to perform assignment and provides feedback. Now prints a more specific error message if either the task or user is not found.",
+        "change_type": "modified",
         "file_path": "cli.py",
         "id": "cli_assign_task_command",
         "name": "assign_task",
-        "pseudo_code": "IF args length < 2:\n    PRINT usage message\n    RETURN\nSET task_id, user_id from args\nIF service.assign_task_to_user(task_id, user_id):\n    PRINT success message\nELSE:\n    PRINT error message",
+        "pseudo_code": "IF args length < 2:\n    PRINT usage message\n    RETURN\nSET task_id, user_id from args\nIF service.assign_task_to_user(task_id, user_id):\n    PRINT success message\nELSE:\n    PRINT 'Task or user not found.'",
         "type": "component"
       },
       {
-        "How_is_it_connected_to_implementation": "CLI command handler for unassigning a user from a task. Invokes the service layer and provides feedback.",
+        "How_is_it_connected_to_implementation": "Handles the CLI command for unassigning a user from a task. Invokes the service layer and provides feedback. Now prints a more specific error message if the task is not found.",
+        "change_type": "modified",
         "file_path": "cli.py",
         "id": "cli_unassign_task_command",
         "name": "unassign_task",
-        "pseudo_code": "IF args length < 2:\n    PRINT usage message\n    RETURN\nSET task_id, user_id from args\nIF service.unassign_task_from_user(task_id, user_id):\n    PRINT success message\nELSE:\n    PRINT error message",
+        "pseudo_code": "IF args length < 2:\n    PRINT usage message\n    RETURN\nSET task_id, user_id from args\nIF service.unassign_task_from_user(task_id, user_id):\n    PRINT success message\nELSE:\n    PRINT 'Task not found.'",
         "type": "component"
       },
       {
-        "How_is_it_connected_to_implementation": "CLI command handler for reassigning a task to new users. Invokes the service layer and provides feedback.",
+        "How_is_it_connected_to_implementation": "Handles the CLI command for reassigning a task to new users. Invokes the service layer and provides feedback. Now prints a more specific error message if the task is not found or if any user IDs are invalid.",
+        "change_type": "modified",
         "file_path": "cli.py",
         "id": "cli_reassign_task_command",
         "name": "reassign_task",
-        "pseudo_code": "IF args length < 2:\n    PRINT usage message\n    RETURN\nSET task_id from args[0]\nSET user_ids by splitting args[1] by comma\nIF service.reassign_task(task_id, user_ids):\n    PRINT success message\nELSE:\n    PRINT error message",
+        "pseudo_code": "IF args length < 2:\n    PRINT usage message\n    RETURN\nSET task_id from args[0]\nSET user_ids by splitting args[1] by comma\nIF service.reassign_task(task_id, user_ids):\n    PRINT success message\nELSE:\n    PRINT 'Task not found or invalid user IDs.'",
         "type": "component"
       },
       {
-        "How_is_it_connected_to_implementation": "Service method that checks for valid task and user, then assigns the user to the task using the Task model's assign_user method.",
+        "How_is_it_connected_to_implementation": "Checks for valid task and user, then assigns the user to the task using the Task model's assign_user method.",
+        "change_type": "unchanged",
         "file_path": "services.py",
         "id": "service_assign_task_to_user",
         "name": "assign_task_to_user",
@@ -211,7 +215,8 @@
         "type": "function"
       },
       {
-        "How_is_it_connected_to_implementation": "Service method that checks for valid task, then unassigns the user from the task using the Task model's unassign_user method.",
+        "How_is_it_connected_to_implementation": "Checks for valid task, then unassigns the user from the task using the Task model's unassign_user method.",
+        "change_type": "unchanged",
         "file_path": "services.py",
         "id": "service_unassign_task_from_user",
         "name": "unassign_task_from_user",
@@ -219,7 +224,8 @@
         "type": "function"
       },
       {
-        "How_is_it_connected_to_implementation": "Service method that checks for valid task and all user IDs, then replaces the assignees list with new user IDs and updates the timestamp.",
+        "How_is_it_connected_to_implementation": "Checks for valid task and all user IDs, then replaces the assignees list with new user IDs and updates the timestamp.",
+        "change_type": "unchanged",
         "file_path": "services.py",
         "id": "service_reassign_task",
         "name": "reassign_task",
@@ -227,7 +233,8 @@
         "type": "function"
       },
       {
-        "How_is_it_connected_to_implementation": "Task model method that adds a user to the assignees list if not already present and updates the timestamp.",
+        "How_is_it_connected_to_implementation": "Adds a user to the assignees list if not already present and updates the timestamp.",
+        "change_type": "unchanged",
         "file_path": "models.py",
         "id": "task_assign_user_method",
         "name": "assign_user",
@@ -235,7 +242,8 @@
         "type": "function"
       },
       {
-        "How_is_it_connected_to_implementation": "Task model method that removes a user from the assignees list if present and updates the timestamp.",
+        "How_is_it_connected_to_implementation": "Removes a user from the assignees list if present and updates the timestamp.",
+        "change_type": "unchanged",
         "file_path": "models.py",
         "id": "task_unassign_user_method",
         "name": "unassign_user",
@@ -245,7 +253,7 @@
     ],
     "missing_implementations": [
       "Assignment and reassignment feedback is only provided via CLI; no UI component exists for assignment actions.",
-      "No explicit feedback for invalid user assignment beyond a generic error message; does not specify which user IDs are invalid.",
+      "No explicit feedback for which user IDs are invalid during assignment/reassignment; only a generic error message is shown.",
       "No implementation for assignment actions in a graphical UI (only CLI is present).",
       "No explicit check for duplicate user assignment in reassign (overwrites with provided list).",
       "No audit/history of assignment changes; only current assignees are stored."
@@ -352,7 +360,7 @@
   "task_3847291060_20260207090001": {
     "implementation": [
       {
-        "How_is_it_connected_to_implementation": "Main entry point for the TaskTracker application. Initializes the CLI and processes command-line arguments. If no arguments are provided, it shows the help menu. The implementation is incomplete in the provided code (missing CLI invocation and help display), but the intent matches the mapping.",
+        "How_is_it_connected_to_implementation": "Main entry point for the TaskTracker application. Initializes the CLI and processes command-line arguments. The implementation is incomplete: the help menu is not shown if no arguments are provided (line 19 is unfinished), and CLI invocation is missing. The intent matches the mapping, but the logic needs completion.",
         "change_type": "modified",
         "file_path": "main.py",
         "id": "main_entry_point_main_py",
@@ -401,7 +409,8 @@
       "No persistent storage: All data is stored in memory; there is no database or file persistence.",
       "No advanced CLI argument parsing (e.g., argparse or click): Arguments are parsed manually.",
       "No support for command aliases or tab completion.",
-      "No internationalization/localization for help or error messages."
+      "No internationalization/localization for help or error messages.",
+      "main.py does not actually invoke the CLI or show the help menu if no arguments are provided (the implementation is incomplete)."
     ]
   },
   "task_3847291056_20260207090001": {
