@@ -88,7 +88,7 @@
         "type": "component"
       },
       {
-        "How_is_it_connected_to_implementation": "Business logic for creating a user. Instantiates a User object, validates, and stores in memory.",
+        "How_is_it_connected_to_implementation": "Business logic for creating a user. Instantiates a User object, stores in memory, and returns the user.",
         "change_type": "unchanged",
         "file_path": "services.py",
         "id": "service_create_user",
@@ -173,14 +173,16 @@
       "UI interface for user management (no web or graphical UI found, only CLI is implemented)",
       "Endpoint/API for user management (no HTTP handlers or REST endpoints found)",
       "Role-based access control enforcement (role is stored but not used for access control)",
-      "Feedback for user operations in UI (only CLI feedback is implemented)"
+      "Feedback for user operations in UI (only CLI feedback is implemented)",
+      "Uniqueness enforcement for user email and ID (no validation logic found for duplicates)",
+      "Validation for user fields (no explicit validation for name, email format, or role)"
     ]
   },
   "task_3847291058_20260207090001": {
     "implementation": [
       {
-        "How_is_it_connected_to_implementation": "Handles the CLI command for assigning a user to a task. Invokes the service layer to perform assignment and provides feedback. Now prints a more specific error message if either the task or user is not found.",
-        "change_type": "modified",
+        "How_is_it_connected_to_implementation": "Handles the CLI command for assigning a user to a task. Invokes the service layer to perform assignment and provides feedback. Prints a specific error message if either the task or user is not found.",
+        "change_type": "unchanged",
         "file_path": "cli.py",
         "id": "cli_assign_task_command",
         "name": "assign_task",
@@ -188,8 +190,8 @@
         "type": "component"
       },
       {
-        "How_is_it_connected_to_implementation": "Handles the CLI command for unassigning a user from a task. Invokes the service layer and provides feedback. Now prints a more specific error message if the task is not found.",
-        "change_type": "modified",
+        "How_is_it_connected_to_implementation": "Handles the CLI command for unassigning a user from a task. Invokes the service layer and provides feedback. Prints a specific error message if the task is not found.",
+        "change_type": "unchanged",
         "file_path": "cli.py",
         "id": "cli_unassign_task_command",
         "name": "unassign_task",
@@ -197,8 +199,8 @@
         "type": "component"
       },
       {
-        "How_is_it_connected_to_implementation": "Handles the CLI command for reassigning a task to new users. Invokes the service layer and provides feedback. Now prints a more specific error message if the task is not found or if any user IDs are invalid.",
-        "change_type": "modified",
+        "How_is_it_connected_to_implementation": "Handles the CLI command for reassigning a task to new users. Invokes the service layer and provides feedback. Prints a specific error message if the task is not found or if any user IDs are invalid.",
+        "change_type": "unchanged",
         "file_path": "cli.py",
         "id": "cli_reassign_task_command",
         "name": "reassign_task",
@@ -252,10 +254,10 @@
       }
     ],
     "missing_implementations": [
-      "Assignment and reassignment feedback is only provided via CLI; no UI component exists for assignment actions.",
+      "No UI component exists for assignment, unassignment, or reassignment actions; only CLI is present.",
       "No explicit feedback for which user IDs are invalid during assignment/reassignment; only a generic error message is shown.",
       "No implementation for assignment actions in a graphical UI (only CLI is present).",
-      "No explicit check for duplicate user assignment in reassign (overwrites with provided list).",
+      "No explicit check for duplicate user assignment in reassign (overwrites with provided list, but does not prevent duplicates).",
       "No audit/history of assignment changes; only current assignees are stored."
     ]
   },
@@ -360,7 +362,7 @@
   "task_3847291060_20260207090001": {
     "implementation": [
       {
-        "How_is_it_connected_to_implementation": "Main entry point for the TaskTracker application. Initializes the CLI and processes command-line arguments. The implementation is incomplete: the help menu is not shown if no arguments are provided (line 19 is unfinished), and CLI invocation is missing. The intent matches the mapping, but the logic needs completion.",
+        "How_is_it_connected_to_implementation": "Main entry point for the TaskTracker application. Intended to initialize the CLI and process command-line arguments. The implementation is incomplete: the help menu is not shown if no arguments are provided (line 19 is unfinished), and CLI invocation is missing. Needs to call TaskTrackerCLI and show help if no arguments.",
         "change_type": "modified",
         "file_path": "main.py",
         "id": "main_entry_point_main_py",
@@ -542,6 +544,328 @@
       "No requirements.txt file is present listing dependencies.",
       "README.md does not contain setup or installation instructions; only features and deliverables are listed.",
       "No UI component is present; only CLI is implemented."
+    ]
+  },
+  "task_4810926712_20260208023110": {
+    "implementation": [
+      {
+        "How_is_it_connected_to_implementation": "Main entry point for the Task Tracker CLI application. Initializes the CLI and processes command-line arguments, invoking the TaskTrackerCLI component.",
+        "file_path": "main.py",
+        "id": "cli_entrypoint_main_py",
+        "name": "main()",
+        "pseudo_code": "IF command-line arguments are provided:\n    Initialize TaskTrackerCLI\n    Pass arguments to TaskTrackerCLI.run()\nELSE:\n    Show help menu",
+        "type": "component"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Implements the command-line user interface for all Task Tracker features. Maps CLI commands to corresponding methods for CRUD operations, assignment, reassignment, transfer, and viewing/filtering tasks and users.",
+        "file_path": "cli.py",
+        "id": "cli_component_tasktrackercli",
+        "name": "TaskTrackerCLI",
+        "pseudo_code": "ON initialization:\n    Create TaskTrackerService instance\n    Map CLI commands to handler methods\nON run(args):\n    IF command in args is valid:\n        Call corresponding handler method\n    ELSE:\n        Show help",
+        "type": "component"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Handles the 'add-user' CLI command. Connects user input to TaskTrackerService.create_user for user creation.",
+        "file_path": "cli.py",
+        "id": "cli_add_user",
+        "name": "add_user()",
+        "pseudo_code": "IF args contain name and email:\n    Call service.create_user(name, email, role)\n    Print user details\nELSE:\n    Print usage",
+        "type": "component"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Handles the 'list-users' CLI command. Connects to TaskTrackerService.get_all_users to display all users.",
+        "file_path": "cli.py",
+        "id": "cli_list_users",
+        "name": "list_users()",
+        "pseudo_code": "Call service.get_all_users()\nIF users exist:\n    Print user details\nELSE:\n    Print 'No users found'",
+        "type": "component"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Handles the 'update-user' CLI command. Connects to TaskTrackerService.update_user for updating user details.",
+        "file_path": "cli.py",
+        "id": "cli_update_user",
+        "name": "update_user()",
+        "pseudo_code": "Parse user_id and optional fields from args\nCall service.update_user(user_id, name, email, role)\nIF success:\n    Print 'User updated'\nELSE:\n    Print 'User not found'",
+        "type": "component"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Handles the 'delete-user' CLI command. Connects to TaskTrackerService.delete_user for user deletion.",
+        "file_path": "cli.py",
+        "id": "cli_delete_user",
+        "name": "delete_user()",
+        "pseudo_code": "Parse user_id from args\nCall service.delete_user(user_id)\nIF success:\n    Print 'User deleted'\nELSE:\n    Print 'User not found'",
+        "type": "component"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Handles the 'add-task' CLI command. Connects to TaskTrackerService.create_task for task creation.",
+        "file_path": "cli.py",
+        "id": "cli_add_task",
+        "name": "add_task()",
+        "pseudo_code": "Parse title, description, priority, due_date from args\nCall service.create_task(title, description, priority, due_date)\nPrint task details",
+        "type": "component"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Handles the 'list-tasks' CLI command. Connects to TaskTrackerService.get_all_tasks to display all tasks.",
+        "file_path": "cli.py",
+        "id": "cli_list_tasks",
+        "name": "list_tasks()",
+        "pseudo_code": "Call service.get_all_tasks()\nIF tasks exist:\n    Print task details\nELSE:\n    Print 'No tasks found'",
+        "type": "component"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Handles the 'update-task' CLI command. Connects to TaskTrackerService.update_task for updating task details.",
+        "file_path": "cli.py",
+        "id": "cli_update_task",
+        "name": "update_task()",
+        "pseudo_code": "Parse task_id and optional fields from args\nCall service.update_task(task_id, title, description, status, priority, due_date)\nIF success:\n    Print 'Task updated'\nELSE:\n    Print 'Task not found'",
+        "type": "component"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Handles the 'delete-task' CLI command. Connects to TaskTrackerService.delete_task for task deletion.",
+        "file_path": "cli.py",
+        "id": "cli_delete_task",
+        "name": "delete_task()",
+        "pseudo_code": "Parse task_id from args\nCall service.delete_task(task_id)\nIF success:\n    Print 'Task deleted'\nELSE:\n    Print 'Task not found'",
+        "type": "component"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Handles the 'assign-task' CLI command. Connects to TaskTrackerService.assign_task_to_user for assigning a task to a user.",
+        "file_path": "cli.py",
+        "id": "cli_assign_task",
+        "name": "assign_task()",
+        "pseudo_code": "Parse task_id and user_id from args\nCall service.assign_task_to_user(task_id, user_id)\nIF success:\n    Print 'Task assigned'\nELSE:\n    Print 'Task or user not found'",
+        "type": "component"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Handles the 'unassign-task' CLI command. Connects to TaskTrackerService.unassign_task_from_user for unassigning a task from a user.",
+        "file_path": "cli.py",
+        "id": "cli_unassign_task",
+        "name": "unassign_task()",
+        "pseudo_code": "Parse task_id and user_id from args\nCall service.unassign_task_from_user(task_id, user_id)\nIF success:\n    Print 'Task unassigned'\nELSE:\n    Print 'Task not found'",
+        "type": "component"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Handles the 'reassign-task' CLI command. Connects to TaskTrackerService.reassign_task for reassigning a task to new users.",
+        "file_path": "cli.py",
+        "id": "cli_reassign_task",
+        "name": "reassign_task()",
+        "pseudo_code": "Parse task_id and user_ids from args\nCall service.reassign_task(task_id, user_ids)\nIF success:\n    Print 'Task reassigned'\nELSE:\n    Print 'Task not found or invalid user IDs'",
+        "type": "component"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Handles the 'view-by-user' CLI command. Connects to TaskTrackerService.get_tasks_by_user to filter tasks by user.",
+        "file_path": "cli.py",
+        "id": "cli_view_tasks_by_user",
+        "name": "view_tasks_by_user()",
+        "pseudo_code": "Parse user_id from args\nCall service.get_user(user_id)\nIF user exists:\n    Call service.get_tasks_by_user(user_id)\n    Display tasks\nELSE:\n    Print 'User not found'",
+        "type": "component"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Handles the 'view-by-status' CLI command. Connects to TaskTrackerService.get_tasks_by_status to filter tasks by status.",
+        "file_path": "cli.py",
+        "id": "cli_view_tasks_by_status",
+        "name": "view_tasks_by_status()",
+        "pseudo_code": "Parse status from args\nCall service.get_tasks_by_status(status)\nDisplay tasks",
+        "type": "component"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Handles the 'view-by-priority' CLI command. Connects to TaskTrackerService.get_tasks_by_priority to filter tasks by priority.",
+        "file_path": "cli.py",
+        "id": "cli_view_tasks_by_priority",
+        "name": "view_tasks_by_priority()",
+        "pseudo_code": "Parse priority from args\nCall service.get_tasks_by_priority(priority)\nDisplay tasks",
+        "type": "component"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Handles the 'view-overdue' CLI command. Connects to TaskTrackerService.get_overdue_tasks to filter overdue tasks.",
+        "file_path": "cli.py",
+        "id": "cli_view_overdue_tasks",
+        "name": "view_overdue_tasks()",
+        "pseudo_code": "Call service.get_overdue_tasks()\nDisplay tasks",
+        "type": "component"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Handles the 'search' CLI command. Connects to TaskTrackerService.search_tasks to search tasks by title or description.",
+        "file_path": "cli.py",
+        "id": "cli_search_tasks",
+        "name": "search_tasks()",
+        "pseudo_code": "Parse query from args\nCall service.search_tasks(query)\nDisplay tasks",
+        "type": "component"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Handles the 'stats' CLI command. Connects to TaskTrackerService.get_task_statistics to display statistics.",
+        "file_path": "cli.py",
+        "id": "cli_show_statistics",
+        "name": "show_statistics()",
+        "pseudo_code": "Call service.get_task_statistics()\nDisplay statistics",
+        "type": "component"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Creates a new user in the in-memory store. Called by CLI for user creation.",
+        "file_path": "services.py",
+        "id": "service_create_user",
+        "name": "create_user()",
+        "pseudo_code": "Create User object\nAdd to users dictionary\nReturn user",
+        "type": "function"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Returns all users from the in-memory store. Called by CLI for listing users.",
+        "file_path": "services.py",
+        "id": "service_get_all_users",
+        "name": "get_all_users()",
+        "pseudo_code": "Return list of all users",
+        "type": "function"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Updates user details in the in-memory store. Called by CLI for updating user.",
+        "file_path": "services.py",
+        "id": "service_update_user",
+        "name": "update_user()",
+        "pseudo_code": "IF user exists:\n    Update fields if provided\n    Return True\nELSE:\n    Return False",
+        "type": "function"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Deletes a user and removes them from all assigned tasks. Called by CLI for user deletion.",
+        "file_path": "services.py",
+        "id": "service_delete_user",
+        "name": "delete_user()",
+        "pseudo_code": "IF user exists:\n    Remove user from all tasks\n    Delete user\n    Return True\nELSE:\n    Return False",
+        "type": "function"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Creates a new task in the in-memory store. Called by CLI for task creation.",
+        "file_path": "services.py",
+        "id": "service_create_task",
+        "name": "create_task()",
+        "pseudo_code": "Create Task object\nAdd to tasks dictionary\nReturn task",
+        "type": "function"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Returns all tasks from the in-memory store. Called by CLI for listing tasks.",
+        "file_path": "services.py",
+        "id": "service_get_all_tasks",
+        "name": "get_all_tasks()",
+        "pseudo_code": "Return list of all tasks",
+        "type": "function"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Updates task details in the in-memory store. Called by CLI for updating task.",
+        "file_path": "services.py",
+        "id": "service_update_task",
+        "name": "update_task()",
+        "pseudo_code": "IF task exists:\n    Update fields if provided\n    Set updated_at\n    Return True\nELSE:\n    Return False",
+        "type": "function"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Deletes a task from the in-memory store. Called by CLI for task deletion.",
+        "file_path": "services.py",
+        "id": "service_delete_task",
+        "name": "delete_task()",
+        "pseudo_code": "IF task exists:\n    Delete task\n    Return True\nELSE:\n    Return False",
+        "type": "function"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Assigns a task to a user. Called by CLI for assignment.",
+        "file_path": "services.py",
+        "id": "service_assign_task_to_user",
+        "name": "assign_task_to_user()",
+        "pseudo_code": "IF task and user exist:\n    Add user_id to task.assignees\n    Return True\nELSE:\n    Return False",
+        "type": "function"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Unassigns a task from a user. Called by CLI for unassignment.",
+        "file_path": "services.py",
+        "id": "service_unassign_task_from_user",
+        "name": "unassign_task_from_user()",
+        "pseudo_code": "IF task exists:\n    Remove user_id from task.assignees\n    Return True\nELSE:\n    Return False",
+        "type": "function"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Reassigns a task to new users. Called by CLI for reassignment.",
+        "file_path": "services.py",
+        "id": "service_reassign_task",
+        "name": "reassign_task()",
+        "pseudo_code": "IF task exists and all user_ids valid:\n    Replace task.assignees with new_user_ids\n    Set updated_at\n    Return True\nELSE:\n    Return False",
+        "type": "function"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Returns all tasks assigned to a specific user. Called by CLI for filtering.",
+        "file_path": "services.py",
+        "id": "service_get_tasks_by_user",
+        "name": "get_tasks_by_user()",
+        "pseudo_code": "Return tasks where user_id in task.assignees",
+        "type": "function"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Returns all tasks with a specific status. Called by CLI for filtering.",
+        "file_path": "services.py",
+        "id": "service_get_tasks_by_status",
+        "name": "get_tasks_by_status()",
+        "pseudo_code": "Return tasks where task.status == status",
+        "type": "function"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Returns all tasks with a specific priority. Called by CLI for filtering.",
+        "file_path": "services.py",
+        "id": "service_get_tasks_by_priority",
+        "name": "get_tasks_by_priority()",
+        "pseudo_code": "Return tasks where task.priority == priority",
+        "type": "function"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Returns all overdue tasks. Called by CLI for filtering.",
+        "file_path": "services.py",
+        "id": "service_get_overdue_tasks",
+        "name": "get_overdue_tasks()",
+        "pseudo_code": "Return tasks where task.is_overdue()",
+        "type": "function"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Searches tasks by title or description. Called by CLI for search.",
+        "file_path": "services.py",
+        "id": "service_search_tasks",
+        "name": "search_tasks()",
+        "pseudo_code": "FOR each task in tasks:\n    IF query in task.title or task.description:\n        Add to results\nReturn results",
+        "type": "function"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Returns statistics about tasks and users. Called by CLI for stats.",
+        "file_path": "services.py",
+        "id": "service_get_task_statistics",
+        "name": "get_task_statistics()",
+        "pseudo_code": "Count total tasks, tasks by status, overdue tasks, total users\nReturn stats dictionary",
+        "type": "function"
+      }
+    ],
+    "missing_implementations": [
+      "No graphical or web-based UI is implemented; only CLI is available.",
+      "No explicit 'task transfer' feature is present (i.e., moving a task between users as a distinct operation from assignment/reassignment).",
+      "No advanced filtering (e.g., by custom criteria, date ranges, or multi-field filters) is exposed in the CLI, except for status, priority, user, and overdue.",
+      "No persistent storage; all management is in-memory only."
+    ]
+  },
+  "task_1620834950_20260208023120": {
+    "implementation": [
+      {
+        "How_is_it_connected_to_implementation": "CLI command that allows a user to transfer a task to other users by invoking the reassign_task method. Provides user feedback for success or failure.",
+        "file_path": "cli.py",
+        "id": "cli_reassign_task_command",
+        "name": "reassign-task",
+        "pseudo_code": "IF number of arguments < 2:\n    PRINT usage message\n    RETURN\nSET task_id = first argument\nSET user_ids = split second argument by comma\nIF service.reassign_task(task_id, user_ids) returns True:\n    PRINT success message\nELSE:\n    PRINT failure message",
+        "type": "component"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Business logic that updates the assignees of a task, ensuring all user IDs exist and preserving task data integrity.",
+        "file_path": "services.py",
+        "id": "service_reassign_task_function",
+        "name": "reassign_task",
+        "pseudo_code": "GET task by task_id\nIF task does not exist:\n    RETURN False\nFOR each user_id in new_user_ids:\n    IF user_id not in users:\n        RETURN False\nSET task.assignees = copy of new_user_ids\nUPDATE task.updated_at to now\nRETURN True",
+        "type": "function"
+      }
+    ],
+    "missing_implementations": [
+      "No UI component exists for transferring a task between users; only CLI is implemented.",
+      "No explicit endpoint for task transfer is present; only service and CLI logic are implemented."
     ]
   }
 }
