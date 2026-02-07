@@ -36,6 +36,8 @@ A simple Task Tracker application to manage tasks and users with a lightweight i
   - By **Priority**
 
 
+### 5. User can transfer the task to other user.
+
 ### 6. Storage
 - No external storage (e.g., database, files).
 - All data stored in **variables (in-memory)**.
