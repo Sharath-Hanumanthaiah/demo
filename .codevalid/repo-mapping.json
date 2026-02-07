@@ -79,7 +79,8 @@
   "task_3847291057_20260207090001": {
     "implementation": [
       {
-        "How_is_it_connected_to_implementation": "CLI command handler for adding a user. Invokes the service layer to create a user and provides feedback to the user.",
+        "How_is_it_connected_to_implementation": "CLI command handler for adding a user. Parses arguments, invokes the service layer to create a user, and prints feedback to the user.",
+        "change_type": "unchanged",
         "file_path": "cli.py",
         "id": "cli_add_user_command",
         "name": "add_user",
@@ -87,31 +88,8 @@
         "type": "component"
       },
       {
-        "How_is_it_connected_to_implementation": "CLI command handler for listing all users. Fetches users from the service and displays them.",
-        "file_path": "cli.py",
-        "id": "cli_list_users_command",
-        "name": "list_users",
-        "pseudo_code": "CALL service.get_all_users()\nIF no users\n    PRINT 'No users found.'\n    RETURN\nFOR each user in users\n    PRINT user details",
-        "type": "component"
-      },
-      {
-        "How_is_it_connected_to_implementation": "CLI command handler for updating user information. Parses arguments, calls service to update, and prints feedback.",
-        "file_path": "cli.py",
-        "id": "cli_update_user_command",
-        "name": "update_user",
-        "pseudo_code": "IF no args\n    PRINT usage message\n    RETURN\nPARSE user_id, name, email, role from args\nCALL service.update_user(user_id, name, email, role)\nIF success\n    PRINT 'User updated successfully!'\nELSE\n    PRINT 'User not found.'",
-        "type": "component"
-      },
-      {
-        "How_is_it_connected_to_implementation": "CLI command handler for deleting a user. Calls service to delete and prints feedback.",
-        "file_path": "cli.py",
-        "id": "cli_delete_user_command",
-        "name": "delete_user",
-        "pseudo_code": "IF no args\n    PRINT usage message\n    RETURN\nSET user_id from args\nCALL service.delete_user(user_id)\nIF success\n    PRINT 'User deleted successfully!'\nELSE\n    PRINT 'User not found.'",
-        "type": "component"
-      },
-      {
         "How_is_it_connected_to_implementation": "Business logic for creating a user. Instantiates a User object, validates, and stores in memory.",
+        "change_type": "unchanged",
         "file_path": "services.py",
         "id": "service_create_user",
         "name": "create_user",
@@ -119,7 +97,17 @@
         "type": "function"
       },
       {
+        "How_is_it_connected_to_implementation": "CLI command handler for listing all users. Fetches users from the service and displays them.",
+        "change_type": "unchanged",
+        "file_path": "cli.py",
+        "id": "cli_list_users_command",
+        "name": "list_users",
+        "pseudo_code": "CALL service.get_all_users()\nIF no users\n    PRINT 'No users found.'\n    RETURN\nFOR each user in users\n    PRINT user details",
+        "type": "component"
+      },
+      {
         "How_is_it_connected_to_implementation": "Returns all users from in-memory store.",
+        "change_type": "unchanged",
         "file_path": "services.py",
         "id": "service_get_all_users",
         "name": "get_all_users",
@@ -127,7 +115,17 @@
         "type": "function"
       },
       {
+        "How_is_it_connected_to_implementation": "CLI command handler for updating user information. Parses arguments, calls service to update, and prints feedback.",
+        "change_type": "unchanged",
+        "file_path": "cli.py",
+        "id": "cli_update_user_command",
+        "name": "update_user",
+        "pseudo_code": "IF no args\n    PRINT usage message\n    RETURN\nPARSE user_id, name, email, role from args\nCALL service.update_user(user_id, name, email, role)\nIF success\n    PRINT 'User updated successfully!'\nELSE\n    PRINT 'User not found.'",
+        "type": "component"
+      },
+      {
         "How_is_it_connected_to_implementation": "Updates user information in memory. Handles name, email, and role updates.",
+        "change_type": "unchanged",
         "file_path": "services.py",
         "id": "service_update_user",
         "name": "update_user",
@@ -135,7 +133,17 @@
         "type": "function"
       },
       {
+        "How_is_it_connected_to_implementation": "CLI command handler for deleting a user. Calls service to delete and prints feedback.",
+        "change_type": "unchanged",
+        "file_path": "cli.py",
+        "id": "cli_delete_user_command",
+        "name": "delete_user",
+        "pseudo_code": "IF no args\n    PRINT usage message\n    RETURN\nSET user_id from args\nCALL service.delete_user(user_id)\nIF success\n    PRINT 'User deleted successfully!'\nELSE\n    PRINT 'User not found.'",
+        "type": "component"
+      },
+      {
         "How_is_it_connected_to_implementation": "Deletes user from in-memory store and removes user from all assigned tasks.",
+        "change_type": "unchanged",
         "file_path": "services.py",
         "id": "service_delete_user",
         "name": "delete_user",
@@ -144,10 +152,20 @@
       },
       {
         "How_is_it_connected_to_implementation": "Fetches a user by ID from in-memory store. Used for validation and retrieval.",
+        "change_type": "unchanged",
         "file_path": "services.py",
         "id": "service_get_user",
         "name": "get_user",
         "pseudo_code": "RETURN user from users dictionary by user_id",
+        "type": "function"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Provides ability to find a user by email, supporting uniqueness and filtering requirements.",
+        "change_type": "new",
+        "file_path": "services.py",
+        "id": "service_find_user_by_email",
+        "name": "find_user_by_email",
+        "pseudo_code": "FOR each user in users dictionary\n    IF user.email == email\n        RETURN user\nRETURN None",
         "type": "function"
       }
     ],
@@ -237,6 +255,7 @@
     "implementation": [
       {
         "How_is_it_connected_to_implementation": "CLI command for viewing tasks assigned to a specific user. Invokes service filtering and displays results.",
+        "change_type": "unchanged",
         "file_path": "cli.py",
         "id": "cli_view_tasks_by_user",
         "name": "TaskTrackerCLI.view_tasks_by_user",
@@ -245,6 +264,7 @@
       },
       {
         "How_is_it_connected_to_implementation": "Filters in-memory tasks by assignee user ID. Used by CLI to implement user-based filtering.",
+        "change_type": "unchanged",
         "file_path": "services.py",
         "id": "service_get_tasks_by_user",
         "name": "TaskTrackerService.get_tasks_by_user",
@@ -253,6 +273,7 @@
       },
       {
         "How_is_it_connected_to_implementation": "CLI command for viewing tasks filtered by status. Maps status string to enum, invokes service, displays results.",
+        "change_type": "unchanged",
         "file_path": "cli.py",
         "id": "cli_view_tasks_by_status",
         "name": "TaskTrackerCLI.view_tasks_by_status",
@@ -261,6 +282,7 @@
       },
       {
         "How_is_it_connected_to_implementation": "Filters in-memory tasks by status. Used by CLI for status-based filtering.",
+        "change_type": "unchanged",
         "file_path": "services.py",
         "id": "service_get_tasks_by_status",
         "name": "TaskTrackerService.get_tasks_by_status",
@@ -269,6 +291,7 @@
       },
       {
         "How_is_it_connected_to_implementation": "CLI command for viewing tasks filtered by priority. Maps priority string to enum, invokes service, displays results.",
+        "change_type": "unchanged",
         "file_path": "cli.py",
         "id": "cli_view_tasks_by_priority",
         "name": "TaskTrackerCLI.view_tasks_by_priority",
@@ -277,6 +300,7 @@
       },
       {
         "How_is_it_connected_to_implementation": "Filters in-memory tasks by priority. Used by CLI for priority-based filtering.",
+        "change_type": "unchanged",
         "file_path": "services.py",
         "id": "service_get_tasks_by_priority",
         "name": "TaskTrackerService.get_tasks_by_priority",
@@ -285,6 +309,7 @@
       },
       {
         "How_is_it_connected_to_implementation": "CLI command for viewing overdue tasks. Invokes service filtering and displays results.",
+        "change_type": "unchanged",
         "file_path": "cli.py",
         "id": "cli_view_overdue_tasks",
         "name": "TaskTrackerCLI.view_overdue_tasks",
@@ -293,6 +318,7 @@
       },
       {
         "How_is_it_connected_to_implementation": "Filters in-memory tasks to find those overdue. Used by CLI for overdue filtering.",
+        "change_type": "unchanged",
         "file_path": "services.py",
         "id": "service_get_overdue_tasks",
         "name": "TaskTrackerService.get_overdue_tasks",
@@ -301,14 +327,16 @@
       },
       {
         "How_is_it_connected_to_implementation": "Filters in-memory tasks by due date range. Can be used for due date filtering if exposed via CLI.",
+        "change_type": "unchanged",
         "file_path": "services.py",
-        "id": "cli_view_tasks_by_due_date",
+        "id": "service_get_tasks_by_due_date",
         "name": "TaskTrackerService.get_tasks_by_due_date",
         "pseudo_code": "FOR each task IN tasks.values():\n    IF task.due_date is None: CONTINUE\n    IF start_date and task.due_date < start_date: CONTINUE\n    IF end_date and task.due_date > end_date: CONTINUE\n    ADD task to filtered_tasks\nRETURN filtered_tasks",
         "type": "function"
       },
       {
         "How_is_it_connected_to_implementation": "Displays filtered tasks in CLI. Provides feedback when no tasks match filters.",
+        "change_type": "unchanged",
         "file_path": "cli.py",
         "id": "cli_display_tasks_feedback",
         "name": "TaskTrackerCLI._display_tasks",
@@ -324,7 +352,8 @@
   "task_3847291060_20260207090001": {
     "implementation": [
       {
-        "How_is_it_connected_to_implementation": "This is the main entry point for the TaskTracker application. It initializes the CLI and processes command-line arguments, ensuring the CLI is invoked when the program is run.",
+        "How_is_it_connected_to_implementation": "Main entry point for the TaskTracker application. Initializes the CLI and processes command-line arguments. If no arguments are provided, it shows the help menu. The implementation is incomplete in the provided code (missing CLI invocation and help display), but the intent matches the mapping.",
+        "change_type": "modified",
         "file_path": "main.py",
         "id": "main_entry_point_main_py",
         "name": "main()",
@@ -332,7 +361,8 @@
         "type": "function"
       },
       {
-        "How_is_it_connected_to_implementation": "This function is the main entry point for the CLI module. It creates an instance of TaskTrackerCLI and runs it with the provided arguments.",
+        "How_is_it_connected_to_implementation": "Main entry point for the CLI module. Creates an instance of TaskTrackerCLI and runs it with the provided arguments. This is invoked when cli.py is run directly.",
+        "change_type": "unchanged",
         "file_path": "cli.py",
         "id": "cli_module_main_entry",
         "name": "main()",
@@ -340,7 +370,8 @@
         "type": "function"
       },
       {
-        "How_is_it_connected_to_implementation": "This class encapsulates all CLI logic, including command parsing, help documentation, error handling, and feedback for invalid inputs. It maps CLI commands to handler methods and provides a user-friendly interface.",
+        "How_is_it_connected_to_implementation": "Encapsulates all CLI logic, including command parsing, help documentation, error handling, and feedback for invalid inputs. Maps CLI commands to handler methods and provides a user-friendly interface.",
+        "change_type": "unchanged",
         "file_path": "cli.py",
         "id": "cli_class_tasktrackercli",
         "name": "TaskTrackerCLI",
@@ -348,7 +379,8 @@
         "type": "function"
       },
       {
-        "How_is_it_connected_to_implementation": "Each method (e.g., add_user, list_users, add_task, update_task, etc.) implements a CLI command, parses arguments, calls the appropriate service function, and provides user feedback and error handling.",
+        "How_is_it_connected_to_implementation": "Each method (e.g., add_user, list_users, add_task, update_task, etc.) implements a CLI command, parses arguments, calls the appropriate service function, and provides user feedback and error handling. The set of commands has expanded to include: unassign-task, reassign-task, view-by-user, view-by-status, view-by-priority, view-overdue, search, stats, and improved argument parsing.",
+        "change_type": "modified",
         "file_path": "cli.py",
         "id": "cli_command_handlers",
         "name": "TaskTrackerCLI command handler methods",
@@ -356,7 +388,8 @@
         "type": "function"
       },
       {
-        "How_is_it_connected_to_implementation": "Implements all business logic and data management for users and tasks. All CLI commands delegate to these service methods for actual operations.",
+        "How_is_it_connected_to_implementation": "Implements all business logic and data management for users and tasks. All CLI commands delegate to these service methods for actual operations. Methods include user CRUD, task CRUD, assignment, reassignment, filtering, searching, and statistics.",
+        "change_type": "unchanged",
         "file_path": "services.py",
         "id": "service_class_tasktrackerservice",
         "name": "TaskTrackerService",
@@ -374,73 +407,132 @@
   "task_3847291056_20260207090001": {
     "implementation": [
       {
-        "How_is_it_connected_to_implementation": "CLI command handler for creating a new task. Invokes the service layer to perform the creation and updates in-memory storage.",
+        "How_is_it_connected_to_implementation": "Handles the CLI command for creating a new task. Parses user input for task details and invokes the service layer to create and store the task in memory.",
+        "change_type": "unchanged",
         "file_path": "cli.py",
         "id": "cli_add_task_command",
         "name": "add_task",
-        "pseudo_code": "When user runs 'add_task' command:\n    Parse arguments for task details\n    Call service.create_task with parsed details\n    Display result to user",
+        "pseudo_code": "IF user runs 'add-task' command:\n    Parse arguments for title, description, priority, due date\n    Call service.create_task(title, description, priority, due_date)\n    Display task creation result to user",
         "type": "function"
       },
       {
-        "How_is_it_connected_to_implementation": "Service method that creates a new task object, adds it to in-memory storage, and returns the created task.",
+        "How_is_it_connected_to_implementation": "Creates a new Task object with provided details, adds it to the in-memory task dictionary, and returns the created Task.",
+        "change_type": "unchanged",
         "file_path": "services.py",
         "id": "service_create_task",
         "name": "create_task",
-        "pseudo_code": "Receive task details (title, description, etc.)\n    Create new Task object\n    Add Task to in-memory task list\n    Return created Task",
+        "pseudo_code": "Receive title, description, priority, due_date\n    Create new Task object\n    Add Task to in-memory tasks dictionary\n    Return created Task",
         "type": "function"
       },
       {
-        "How_is_it_connected_to_implementation": "CLI command handler for reading/listing all tasks. Invokes the service layer to fetch tasks from in-memory storage.",
+        "How_is_it_connected_to_implementation": "Handles the CLI command for listing all tasks. Calls the service layer to fetch all tasks from in-memory storage and displays them.",
+        "change_type": "unchanged",
         "file_path": "cli.py",
         "id": "cli_list_tasks_command",
         "name": "list_tasks",
-        "pseudo_code": "When user runs 'list_tasks' command:\n    Call service.get_all_tasks\n    Display list of tasks to user",
+        "pseudo_code": "IF user runs 'list-tasks' command:\n    Call service.get_all_tasks()\n    Display list of tasks to user",
         "type": "function"
       },
       {
-        "How_is_it_connected_to_implementation": "Service method that retrieves all tasks from in-memory storage.",
+        "How_is_it_connected_to_implementation": "Returns all Task objects from the in-memory task dictionary.",
+        "change_type": "unchanged",
         "file_path": "services.py",
         "id": "service_get_all_tasks",
         "name": "get_all_tasks",
-        "pseudo_code": "Return all Task objects from in-memory task list",
+        "pseudo_code": "Return list of all Task objects from in-memory tasks dictionary",
         "type": "function"
       },
       {
-        "How_is_it_connected_to_implementation": "CLI command handler for updating a task. Invokes the service layer to perform the update and reflect changes in in-memory storage.",
+        "How_is_it_connected_to_implementation": "Handles the CLI command for updating a task. Parses user input for task ID and updated details, then calls the service layer to update the task in memory.",
+        "change_type": "unchanged",
         "file_path": "cli.py",
         "id": "cli_update_task_command",
         "name": "update_task",
-        "pseudo_code": "When user runs 'update_task' command:\n    Parse arguments for task ID and updated details\n    Call service.update_task with parsed details\n    Display result to user",
+        "pseudo_code": "IF user runs 'update-task' command:\n    Parse arguments for task ID and updated details\n    Call service.update_task(task_id, title, description, status, priority, due_date)\n    Display update result to user",
         "type": "function"
       },
       {
-        "How_is_it_connected_to_implementation": "Service method that updates an existing task in in-memory storage based on provided details.",
+        "How_is_it_connected_to_implementation": "Updates an existing task in the in-memory dictionary based on provided details and returns success/failure.",
+        "change_type": "unchanged",
         "file_path": "services.py",
         "id": "service_update_task",
         "name": "update_task",
-        "pseudo_code": "Receive task ID and updated details\n    Find Task in in-memory task list\n    Update Task fields\n    Return updated Task",
+        "pseudo_code": "Receive task ID and updated details\n    Find Task in in-memory tasks dictionary\n    Update Task fields if provided\n    Return success/failure",
         "type": "function"
       },
       {
-        "How_is_it_connected_to_implementation": "CLI command handler for deleting a task. Invokes the service layer to remove the task from in-memory storage.",
+        "How_is_it_connected_to_implementation": "Handles the CLI command for deleting a task. Parses user input for task ID and calls the service layer to remove the task from memory.",
+        "change_type": "unchanged",
         "file_path": "cli.py",
         "id": "cli_delete_task_command",
         "name": "delete_task",
-        "pseudo_code": "When user runs 'delete_task' command:\n    Parse argument for task ID\n    Call service.delete_task with task ID\n    Display result to user",
+        "pseudo_code": "IF user runs 'delete-task' command:\n    Parse argument for task ID\n    Call service.delete_task(task_id)\n    Display deletion result to user",
         "type": "function"
       },
       {
-        "How_is_it_connected_to_implementation": "Service method that deletes a task from in-memory storage by ID.",
+        "How_is_it_connected_to_implementation": "Deletes a task from the in-memory dictionary by ID and returns success/failure.",
+        "change_type": "unchanged",
         "file_path": "services.py",
         "id": "service_delete_task",
         "name": "delete_task",
-        "pseudo_code": "Receive task ID\n    Find and remove Task from in-memory task list\n    Return success/failure",
+        "pseudo_code": "Receive task ID\n    Remove Task from in-memory tasks dictionary if exists\n    Return success/failure",
         "type": "function"
       }
     ],
     "missing_implementations": [
       "No UI components for Task CRUD operations are present.",
       "No API endpoints for Task CRUD operations are present."
+    ]
+  },
+  "task_2039485762_20260207170000": {
+    "implementation": [
+      {
+        "How_is_it_connected_to_implementation": "This is the CLI entry point, initializing the TaskTrackerCLI and running the command-line interface. It is the first function invoked when the CLI is executed.",
+        "file_path": "cli.py",
+        "id": "cli_entrypoint_tasktrackercli_main",
+        "name": "main()",
+        "pseudo_code": "IF script is run as main:\n    Create TaskTrackerCLI instance\n    Run CLI with command-line arguments",
+        "type": "function"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Implements the command-line interface, mapping user commands to service functions. Handles all user interactions and command parsing.",
+        "file_path": "cli.py",
+        "id": "cli_class_tasktrackercli",
+        "name": "TaskTrackerCLI",
+        "pseudo_code": "Initialize TaskTrackerService\nDefine command-to-method mapping\nFOR each CLI command:\n    Parse arguments\n    Call corresponding method\n    Display results or errors",
+        "type": "component"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Dispatches CLI commands to the appropriate handler methods, serving as the main command router.",
+        "file_path": "cli.py",
+        "id": "cli_method_run",
+        "name": "run(args)",
+        "pseudo_code": "IF no args OR command not recognized:\n    Show help\nELSE:\n    Call command handler with arguments",
+        "type": "function"
+      },
+      {
+        "How_is_it_connected_to_implementation": "These methods implement the CLI commands for user and task management, assignment, viewing, searching, and statistics. They invoke corresponding service methods and display results.",
+        "file_path": "cli.py",
+        "id": "cli_methods_user_task_assignment_view_utility",
+        "name": "add_user, list_users, update_user, delete_user, add_task, list_tasks, update_task, delete_task, assign_task, unassign_task, reassign_task, view_tasks_by_user, view_tasks_by_status, view_tasks_by_priority, view_overdue_tasks, search_tasks, show_statistics",
+        "pseudo_code": "FOR each command:\n    Parse arguments\n    Validate input\n    Call TaskTrackerService method\n    Print output or error",
+        "type": "function"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Implements business logic and in-memory data management for users and tasks. All CLI operations are routed through this service.",
+        "file_path": "services.py",
+        "id": "service_class_tasktrackerservice",
+        "name": "TaskTrackerService",
+        "pseudo_code": "Initialize empty user and task stores\nFOR user operations:\n    Create, update, delete, list users\nFOR task operations:\n    Create, update, delete, list tasks\nFOR assignment:\n    Assign/unassign/reassign tasks\nFOR filtering:\n    Filter tasks by user, status, priority, due date\nFOR statistics:\n    Compute task statistics",
+        "type": "function"
+      }
+    ],
+    "missing_implementations": [
+      "No 'routes' module or file exists; no API endpoints are implemented.",
+      "Source code is not organized into directories named 'models', 'services', and 'routes'\u2014all are single .py files in the root.",
+      "No requirements.txt file is present listing dependencies.",
+      "README.md does not contain setup or installation instructions; only features and deliverables are listed.",
+      "No UI component is present; only CLI is implemented."
     ]
   }
 }
