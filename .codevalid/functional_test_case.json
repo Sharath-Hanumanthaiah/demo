@@ -477,6 +477,179 @@
           "type": "negative"
         }
       ]
+    },
+    {
+      "implementation_id": "model_user_validation",
+      "test_cases": [
+        {
+          "description": "Validates that user creation succeeds with non-empty name and properly formatted email.",
+          "id": "TC01_valid_name_and_email",
+          "implementation_id": "model_user_validation",
+          "name": "test_valid_name_and_email",
+          "test_setup": {
+            "given": "name='Alice', email='alice@example.com'",
+            "then": "No exception is raised; user is created successfully.",
+            "when": "User.__post_init__ is called"
+          },
+          "type": "positive"
+        },
+        {
+          "description": "Checks that an empty name raises a ValueError.",
+          "id": "TC02_empty_name",
+          "implementation_id": "model_user_validation",
+          "name": "test_empty_name",
+          "test_setup": {
+            "given": "name='', email='alice@example.com'",
+            "then": "ValueError is raised with appropriate message.",
+            "when": "User.__post_init__ is called"
+          },
+          "type": "negative"
+        },
+        {
+          "description": "Checks that a name with only whitespace raises a ValueError if whitespace is considered empty.",
+          "id": "TC03_only_whitespace_name",
+          "implementation_id": "model_user_validation",
+          "name": "test_whitespace_name",
+          "test_setup": {
+            "given": "name='   ', email='alice@example.com'",
+            "then": "ValueError is raised if whitespace is treated as empty.",
+            "when": "User.__post_init__ is called"
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Checks that an empty email raises a ValueError.",
+          "id": "TC04_empty_email",
+          "implementation_id": "model_user_validation",
+          "name": "test_empty_email",
+          "test_setup": {
+            "given": "name='Alice', email=''",
+            "then": "ValueError is raised with appropriate message.",
+            "when": "User.__post_init__ is called"
+          },
+          "type": "negative"
+        },
+        {
+          "description": "Checks that an email with only whitespace raises a ValueError if whitespace is considered empty.",
+          "id": "TC05_only_whitespace_email",
+          "implementation_id": "model_user_validation",
+          "name": "test_whitespace_email",
+          "test_setup": {
+            "given": "name='Alice', email='   '",
+            "then": "ValueError is raised if whitespace is treated as empty.",
+            "when": "User.__post_init__ is called"
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Checks that an email without '@' raises a ValueError.",
+          "id": "TC06_email_missing_at_symbol",
+          "implementation_id": "model_user_validation",
+          "name": "test_email_missing_at",
+          "test_setup": {
+            "given": "name='Alice', email='alice.example.com'",
+            "then": "ValueError is raised indicating invalid email format.",
+            "when": "User.__post_init__ is called"
+          },
+          "type": "negative"
+        },
+        {
+          "description": "Checks that an email starting with '@' is allowed.",
+          "id": "TC07_email_at_start",
+          "implementation_id": "model_user_validation",
+          "name": "test_email_at_start",
+          "test_setup": {
+            "given": "name='Alice', email='@example.com'",
+            "then": "No exception is raised.",
+            "when": "User.__post_init__ is called"
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Checks that an email ending with '@' is allowed.",
+          "id": "TC08_email_at_end",
+          "implementation_id": "model_user_validation",
+          "name": "test_email_at_end",
+          "test_setup": {
+            "given": "name='Alice', email='alice@'",
+            "then": "No exception is raised.",
+            "when": "User.__post_init__ is called"
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Checks that the shortest possible valid name and email pass validation.",
+          "id": "TC09_name_and_email_min_length",
+          "implementation_id": "model_user_validation",
+          "name": "test_min_length_name_and_email",
+          "test_setup": {
+            "given": "name='A', email='a@b'",
+            "then": "No exception is raised.",
+            "when": "User.__post_init__ is called"
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Checks that an email with multiple '@' symbols is allowed.",
+          "id": "TC10_email_multiple_at_symbols",
+          "implementation_id": "model_user_validation",
+          "name": "test_email_multiple_at_symbols",
+          "test_setup": {
+            "given": "name='Alice', email='alice@@example.com'",
+            "then": "No exception is raised since '@' is present.",
+            "when": "User.__post_init__ is called"
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Checks that passing None as name raises a ValueError.",
+          "id": "TC11_name_none",
+          "implementation_id": "model_user_validation",
+          "name": "test_name_none",
+          "test_setup": {
+            "given": "name=None, email='alice@example.com'",
+            "then": "ValueError is raised.",
+            "when": "User.__post_init__ is called"
+          },
+          "type": "negative"
+        },
+        {
+          "description": "Checks that passing None as email raises a ValueError.",
+          "id": "TC12_email_none",
+          "implementation_id": "model_user_validation",
+          "name": "test_email_none",
+          "test_setup": {
+            "given": "name='Alice', email=None",
+            "then": "ValueError is raised.",
+            "when": "User.__post_init__ is called"
+          },
+          "type": "negative"
+        },
+        {
+          "description": "Checks that passing a non-string email (integer) raises a ValueError or TypeError.",
+          "id": "TC13_email_is_integer",
+          "implementation_id": "model_user_validation",
+          "name": "test_email_is_integer",
+          "test_setup": {
+            "given": "name='Alice', email=12345",
+            "then": "Exception is raised indicating invalid type.",
+            "when": "User.__post_init__ is called"
+          },
+          "type": "negative"
+        },
+        {
+          "description": "Checks that passing a non-string name (integer) raises a ValueError or TypeError.",
+          "id": "TC14_name_is_integer",
+          "implementation_id": "model_user_validation",
+          "name": "test_name_is_integer",
+          "test_setup": {
+            "given": "name=100, email='alice@example.com'",
+            "then": "Exception is raised indicating invalid type.",
+            "when": "User.__post_init__ is called"
+          },
+          "type": "negative"
+        }
+      ]
     }
   ],
   "component": [],
