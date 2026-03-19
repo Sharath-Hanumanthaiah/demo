@@ -3,6 +3,7 @@
 
 A simple Task Tracker application to manage tasks and users with a lightweight in-memory storage approach.
 
+
 ## Features
 
 ### 1. CRUD for Tasks
@@ -15,7 +16,6 @@ A simple Task Tracker application to manage tasks and users with a lightweight i
   - **Due Date**
   - **Priority**
 
-
 ### 2. User Management
 - Add, edit, delete users.
 - Each user should have:
@@ -23,7 +23,6 @@ A simple Task Tracker application to manage tasks and users with a lightweight i
   - **Name**
   - **Email**
   - **Role**
-
 
 ### 3. Assign & Reassign Tasks
 - Assign one or more users to a task.
