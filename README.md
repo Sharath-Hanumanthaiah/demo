@@ -6,7 +6,6 @@ A simple Task Tracker application to manage tasks and users with a lightweight i
 ## Features
 
 
-
 ### 1. CRUD for Tasks
 - Create, Read, Update, Delete tasks.
 - Each task should have:
