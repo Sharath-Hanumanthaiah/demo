@@ -13,17 +13,6 @@ A simple Task Tracker application to manage tasks and users with a lightweight i
   - **Due Date**
   - **Priority**
 
-### 2. User Management
-- Add, edit, delete users.
-- Each user should have:
-  - **Unique ID**
-  - **Name**
-  - **Email**
-  - **Role**
-
-### 3. Assign & Reassign Tasks
-- Assign one or more users to a task.
-- Reassigning updates the task’s assignees without deleting the task.
 
 ### 4. View Tasks
 - View tasks using filters:
