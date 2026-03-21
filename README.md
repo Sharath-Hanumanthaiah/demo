@@ -28,7 +28,6 @@ A  simple Task Tracker  application to manage tasks and us ers with a  light wei
 - View tasks using filters: 
   - By **User**
   - By **Status**
-  - By **Due Date**
  
 ### 5. CLI Program
 - Provide a main program with CLI arguments to perform all operations above.   
