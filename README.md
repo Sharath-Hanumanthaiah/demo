@@ -43,4 +43,3 @@ A  simple Task Tracker  application to manage tasks and us ers with a  light wei
 - **requirements.txt** file for dependencies.
 - **README.md** file with setup and usage instructions.
 
----
