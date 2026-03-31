@@ -1,8 +1,4 @@
-# curly-barnacle-task-tracker
-# TaskTracker     
-      
-A  simple Task Tracker  application to manage tasks and us ers with a  light weight in-memory storagce  approach.             
-       
+
 ## Features            
    
 ### 1. CRUD for Tasks  
